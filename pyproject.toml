@@ -1,0 +1,28 @@
+[project]
+name = "nlp-from-scratch"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "flax>=0.8.5",
+    "jax==0.4.30",
+    "jaxlib==0.4.30",
+    "matplotlib>=3.9.4",
+    "numpy>=2.0.2",
+    "optax>=0.2.4",
+    "torch>=2.8.0",
+    "tqdm>=4.70.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.3",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

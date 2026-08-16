@@ -1,0 +1,25 @@
+# Python & Virtual Environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Data & Large Corpus Files
+data/
+
+# Trained Models & Checkpoints
+models/
+checkpoints/
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Visualizations & Plot Artifacts
+*.png
+
+# OS System Files
+.DS_Store
+Thumbs.db
