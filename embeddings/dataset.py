@@ -36,6 +36,7 @@ DATASETS = {
 }
 
 
+### UTILITY FUNCTIONS FOR CBOW AND SKIPGRAM
 def download_data(dataset_name):
     target_filename = DATASETS[dataset_name]["filename"]
     filepath = os.path.join(DATA_DIR, target_filename)
@@ -157,6 +158,10 @@ def generate_batches(pairs, batch_size=32):
         batches.append(pairs[i : i + batch_size])
 
     return batches
+
+
+def build_cooccurence_matrix(token_idx, context_size=5):
+    pass
 
 
 if __name__ == "__main__":

@@ -9,6 +9,10 @@ These are implementations done from scratch , without using any high-level libra
 
 ## Roadmap
 
+- [ ] **`tokenization/` — Text & Subword Tokenizers**
+  - [x] Basic Regex & Frequency Tokenizer (in `dataset.py`)
+  - [ ] Byte-Pair Encoding (BPE) Tokenizer
+  - [ ] WordPiece Tokenizer
 - [x] **`embeddings/` — Word Embeddings**
   - [x] CBOW (Continuous Bag-of-Words)
   - [x] Skip-gram (Word2Vec)
@@ -22,8 +26,8 @@ These are implementations done from scratch , without using any high-level libra
   - [ ] Seq2Seq (Sequence-to-Sequence with Bahdanau / Luong Attention)
   - [ ] Scaled Dot-Product & Multi-Head Attention
 - [ ] **`transformers/` — Transformer Architectures**
-  - [ ] Encoder-Only** (BERT-style Masked Language Model)
-  - [ ] Decoder-Only** (GPT-style Causal Language Model)
+  - [ ] Encoder-Only (BERT-style Masked Language Model)
+  - [ ] Decoder-Only (GPT-style Causal Language Model)
 
 ---
 
@@ -33,3 +37,16 @@ These are implementations done from scratch , without using any high-level libra
 # Run Word2Vec (Skip-gram + Negative Sampling)
 uv run python embeddings/word2vec.py
 ```
+
+---
+
+## Empirical Visualizations (Text8 Benchmark)
+
+Both architectures were trained on the **Full 100MB Text8 Corpus** using Google Colab GPUs (NVIDIA T4) and projected to 2D via t-SNE:
+
+### CBOW vs. Skip-gram + Negative Sampling
+
+| CBOW (Continuous Bag-of-Words) | Skip-gram + Negative Sampling |
+| :---: | :---: |
+| ![CBOW 2D Embeddings Plot](assets/embeddings_plot_cbow.png) | ![Skip-gram NEG 2D Embeddings Plot](assets/embeddings_plot_skipgram_neg.png) |
+| *Context-Averaging Smoothing* | *Noise-Contrastive Separation* |

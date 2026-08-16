@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from dataset import (
     UNK_TOKEN,
+    build_noise_table,
     build_vocab,
     download_data,
     generate_cbow_pairs,
@@ -16,11 +17,11 @@ from tqdm import tqdm
 from utils import find_analogy, find_similar_words, plot_word_embeddings
 
 # Hyperparams for Fast Local Mac Training
-MODE = "skipgram_neg"  # Options: "cbow", "skipgram", or "skipgram_neg"
+MODE = "cbow"  # Options: "cbow", "skipgram", or "skipgram_neg"
 NUM_EPOCHS = 20
 LEARNING_RATE = 3e-3
-BATCH_SIZE = 512
-EMBED_DIM = 32
+BATCH_SIZE = 256
+EMBED_DIM = 128
 MIN_FREQ = 5
 WINDOW_SIZE = 4
 
@@ -276,8 +277,6 @@ if __name__ == "__main__":
         embeddings = trained_model.get_embeddings()
 
     elif MODE == "skipgram_neg":
-        from dataset import build_noise_table
-
         pairs = generate_skip_gram_pairs(token_ids, window_size=WINDOW_SIZE)
         target_tensor = torch.tensor([p[0] for p in pairs], dtype=torch.long)
         pos_context_tensor = torch.tensor([p[1] for p in pairs], dtype=torch.long)

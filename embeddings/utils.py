@@ -10,6 +10,26 @@ def reduce_dimensions_pca(vectors):
     return coords
 
 
+def reduce_dimensions_tsne(vectors, perplexity=5, random_state=42):
+    """Project high-dimensional vectors down to 2D using t-SNE for non-linear cluster separation."""
+    try:
+        from sklearn.manifold import TSNE
+
+        n_samples = vectors.shape[0]
+        perp = min(perplexity, max(1, n_samples - 1))
+        tsne = TSNE(
+            n_components=2,
+            perplexity=perp,
+            random_state=random_state,
+            init="pca",
+            learning_rate="auto",
+        )
+        return tsne.fit_transform(vectors)
+    except ImportError:
+        print("scikit-learn not installed. Falling back to PCA for 2D projection...")
+        return reduce_dimensions_pca(vectors)
+
+
 def find_similar_words(word, embeddings, word2id, id2word, top_k=5):
     """Finds top_k most similar words using cosine similarity."""
     if word not in word2id:
@@ -57,9 +77,9 @@ def find_analogy(word_a, word_b, word_c, embeddings, word2id, id2word, top_k=3):
 
 
 def plot_word_embeddings(
-    sample_words, embeddings, word2id, id2word, save_path="data/embeddings_plot.png"
+    sample_words, embeddings, word2id, id2word, save_path="data/embeddings_plot.png", method="tsne"
 ):
-    """Extracts vectors for sample_words, projects to 2D, and saves a scatter plot."""
+    """Extracts vectors for sample_words, projects to 2D using t-SNE or PCA."""
     valid_words = [w for w in sample_words if w in word2id]
     if not valid_words:
         print("None of the specified words were found in vocabulary!")
@@ -68,7 +88,12 @@ def plot_word_embeddings(
     indices = [word2id[w] for w in valid_words]
     word_vectors = embeddings[indices]
 
-    coords_2d = reduce_dimensions_pca(word_vectors)
+    if method == "tsne":
+        coords_2d = reduce_dimensions_tsne(word_vectors)
+        title_str = "2D t-SNE Projection of Word Embeddings"
+    else:
+        coords_2d = reduce_dimensions_pca(word_vectors)
+        title_str = "2D PCA Projection of Word Embeddings"
 
     plt.figure(figsize=(10, 8))
     plt.scatter(
@@ -91,7 +116,7 @@ def plot_word_embeddings(
             color="darkblue",
         )
 
-    plt.title("2D PCA Projection of Word Embeddings", fontsize=14, fontweight="bold")
+    plt.title(title_str, fontsize=14, fontweight="bold")
     plt.grid(True, linestyle="--", alpha=0.5)
     plt.tight_layout()
 
